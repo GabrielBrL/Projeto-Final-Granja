@@ -12,8 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception{
+        CookieService.setCookie(response,"user","Barros",10000);
         var result = CookieService.getCookie(request,"user");
-        if(CookieService.getCookie(request,"user") != null){
+        if(result != null){
             return true;
         }
         response.sendRedirect("/usuario/login");

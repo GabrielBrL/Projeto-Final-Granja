@@ -2,6 +2,7 @@ package com.api.granjacontrol.controller;
 
 import com.api.granjacontrol.dto.CicleDto;
 import com.api.granjacontrol.model.CadastroCiclo;
+import com.api.granjacontrol.model.CadastroUsuario;
 import com.api.granjacontrol.service.CicleService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -27,11 +29,11 @@ public class CicleController {
     }
 
     @PostMapping
-    public String saveCicle(Model model, @Valid @ModelAttribute CicleDto cicleDto){
-        var cicloModel = new CadastroCiclo();
-        BeanUtils.copyProperties(cicleDto, cicloModel);
-        cicloModel.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")).toLocalDate());
-        cicleService.save(cicloModel);
+    public String saveCicle(@ModelAttribute("formCicle")CadastroCiclo ciclo, Model model){
+//        var cicloModel = new CadastroCiclo();
+//        BeanUtils.copyProperties(cicleDto, cicloModel);
+        ciclo.setRegistrationDate(LocalDateTime.now(ZoneId.of("UTC")).toLocalDate());
+        cicleService.save(ciclo);
         return "redirect:/cicle";
     }
 
@@ -64,6 +66,15 @@ public class CicleController {
 
         return "redirect:/cicle";
     }
+    @GetMapping("/fecharCiclo/{id}")
+    public String fechaCiclo(@PathVariable(value = "id") UUID id){
+        Optional<CadastroCiclo> cicleServicelOptional = cicleService.findById(id);
+        if(!cicleServicelOptional.isPresent()){
+            return "Parking Spot not found!";
+        }
+        cicleService.delete(cicleServicelOptional.get());
+        return "redirect:/cicle";
+    }
     @GetMapping("/edit/{id}")
     public String getOneCicleToEdit(@PathVariable(value = "id") UUID id, Model model){
         Optional<CadastroCiclo> cicleServicelOptional = cicleService.findById(id);
@@ -76,16 +87,18 @@ public class CicleController {
         return "home/edit";
     }
     @PostMapping("/edit/{id}")
-    public String updateCicle(@PathVariable(value = "id") UUID id,
-                                                    @Valid @ModelAttribute CicleDto cicleDto){
+    public String updateCicle(@ModelAttribute("value")CadastroCiclo ciclo, @PathVariable(value = "id") UUID id){
         Optional<CadastroCiclo> cicloOptional = cicleService.findById(id);
         if(!cicloOptional.isPresent()){
             return "Cicle not found.";
         }
         //cicleService.delete(cicloOptional.get());
         var cicleModel = new CadastroCiclo();
-        BeanUtils.copyProperties(cicleDto, cicleModel);
-        cicleService.update(cicleModel, cicloOptional.get().getId());
+        cicleModel.setPeso(ciclo.getPeso());
+        cicleModel.setQuantidade(ciclo.getQuantidade());
+        cicleModel.setRaca(ciclo.getRaca());
+//        BeanUtils.copyProperties(cicleDto, cicleModel);
+        cicleService.update(cicleModel, id);
         return "redirect:/cicle";
     }
 }

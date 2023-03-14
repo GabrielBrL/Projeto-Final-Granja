@@ -44,7 +44,8 @@ public class CicleService {
     }
 
     public void update(CadastroCiclo cadastroCiclo, UUID id){
-        Optional<CadastroCiclo> ciclo = cadastroCicloRepository.findById(id);
+
+        Optional<CadastroCiclo> ciclo = this.findById(id);
         ciclo.get().setRaca(cadastroCiclo.getRaca());
         ciclo.get().setQuantidade(cadastroCiclo.getQuantidade());
         ciclo.get().setPeso(cadastroCiclo.getPeso());

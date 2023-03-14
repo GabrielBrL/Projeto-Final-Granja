@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "CADASTROCICLO")
 public class CadastroCiclo implements Serializable {
     private static final long serialVersionUID = 1L;

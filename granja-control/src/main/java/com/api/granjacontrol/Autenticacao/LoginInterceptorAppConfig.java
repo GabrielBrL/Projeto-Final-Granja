@@ -11,7 +11,6 @@ public class LoginInterceptorAppConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(new LoginInterceptor())
                 .excludePathPatterns(
                         "/usuario/login"
-
                 );
     }
 }

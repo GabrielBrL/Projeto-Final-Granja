@@ -60,16 +60,15 @@ public class UsuarioController {
             model.addAttribute("erro", "Usuário e senha não encontrados.");
             return "usuario/login";
         }
-        CookieService.setCookie(response,"user", usuario.getApelido());
         model.addAttribute("cicle", new CadastroCiclo());
+        CookieService.setCookie(response,"user", usuario.getApelido(), 10000);
         return "redirect:/cicle";
     }
 
     @GetMapping("/sair")
-    public String deslogarUsuario(Model model, HttpServletRequest response){
-        var usuario = new CadastroUsuario();
-        var userCookie = CookieService.getCookie(response,"user");
-        model.addAttribute("cicle", new CadastroCiclo());
+    public String deslogarUsuario(HttpServletResponse response){
+        CookieService.setCookie(response,"user","", 0);
+        //model.addAttribute("cicle", new CadastroCiclo());
         return "redirect:/cicle";
     }
 }

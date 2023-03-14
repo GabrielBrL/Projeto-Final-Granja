@@ -13,14 +13,14 @@
 <div class="container-md">
     <h1 style="text-align:center">Granja Cachoeira Grande</h1>
     <h3>Editar Ciclo</h3>
-    <form role="form" id="form_cadastro" action="#" th:action="@{/cicle/edit/{id}(id=${value.id})}" th:object="${value}" method="post">
+    <form role="form" id="form_cadastro" th:action="@{/cicle/edit/{id}(id=${value.id})}" th:object="${value}" method="post">
     <div class="col-sm-4 mb-3">
         <label for="raca">Raça</label>
-        <input type="text" class="form-control" id="raca" th:field="*{raca}">
+        <input type="text" class="form-control" id="raca" name="raca" th:field="*{raca}">
         <label for="peso">Peso</label>
-        <input type="text" class="form-control" id="peso" th:field="*{peso}">
+        <input type="text" class="form-control" id="peso" name="peso" th:field="*{peso}">
         <label for="quantidade">Quantidade</label>
-        <input type="number" class="form-control" id="quantidade" th:field="*{quantidade}">
+        <input type="number" class="form-control" id="quantidade" name="quantidade" th:field="*{quantidade}">
     </div>
     <button type="submit" class="btn btn-primary mr-3">Salvar</button>
     <a class="btn btn-danger" onclick="clearFields()">Cancelar</a>
